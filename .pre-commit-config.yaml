@@ -1,0 +1,36 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: 'lazy-lock.json'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+        - id: check-added-large-files
+        - id: check-ast
+        - id: check-builtin-literals
+        - id: check-case-conflict
+        - id: check-docstring-first
+        - id: check-json
+        - id: check-merge-conflict
+        - id: check-symlinks
+        - id: check-toml
+        - id: check-vcs-permalinks
+        - id: check-xml
+        - id: check-yaml
+        - id: detect-private-key
+        - id: end-of-file-fixer
+        - id: fix-encoding-pragma
+        - id: mixed-line-ending
+        - id: requirements-txt-fixer
+        - id: trailing-whitespace
+
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v0.15.3
+    hooks:
+        - id: stylua
+
+  - repo: https://github.com/biomejs/pre-commit
+    rev: "v0.4.0"
+    hooks:
+    - id: biome-format
+      additional_dependencies: ["@biomejs/biome@1.8.3"]
