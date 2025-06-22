@@ -1,4 +1,4 @@
-# nvim-jinja
+# nvim-jinja(WIP)
 
 A Neovim plugin that provides treesitter injection for Jinja templates in YAML files (`.ft.j2`).
 
