@@ -5,19 +5,56 @@ M.defaults = {
     enabled = true,
     debug = false,
     filetypes = {
-        "yaml.j2",
-        ["html.j2"] = "html",
-        ["xml.j2"] = "xml",
-        ["json.j2"] = "json",
-        ["css.j2"] = "css",
-        ["js.j2"] = "javascript",
-        ["ts.j2"] = "typescript",
+        extensions = {
+            ["html"] = "html",
+            ["yaml.j2"] = "yaml",
+            ["html.j2"] = "html",
+            ["xml.j2"] = "xml",
+            ["json.j2"] = "json",
+            ["css.j2"] = "css",
+            ["js.j2"] = "javascript",
+            ["ts.j2"] = "typescript",
+        },
+        complex = {
+            [".*git/config.j2"] = "gitconfig",
+            [".*layouts/.*.html"] = "html",
+        },
     },
-    auto_install_parsers = false,
 }
 
 -- Current configuration
 M.options = {}
+
+function M.get_inject_language()
+    local filepath = vim.api.nvim_buf_get_name(0)
+    local filename = vim.fn.fnamemodify(filepath, ":t")
+
+    -- Get filetypes configuration
+    local filetypes = M.options.filetypes
+    if not filetypes then
+        return nil
+    end
+
+    -- Check extensions first
+    if filetypes.extensions then
+        for ext, ft in pairs(filetypes.extensions) do
+            if vim.endswith(filename, ext) then
+                return ft
+            end
+        end
+    end
+
+    -- Check complex patterns
+    if filetypes.complex then
+        for pattern, ft in pairs(filetypes.complex) do
+            if string.match(filepath, pattern) then
+                return ft
+            end
+        end
+    end
+
+    return nil
+end
 
 -- Setup configuration
 function M.setup(opts)
@@ -35,26 +72,8 @@ function M.is_enabled()
 end
 
 -- Check if filetype is supported
-function M.is_supported_filetype(ft)
-return M.get_inject_language(ft) ~=nil
-end
-
--- Get inject language for filetype
-function M.get_inject_language(ft)
-    -- Check if it's a key-value pair
-    if M.options.filetypes[ft] then
-        return M.options.filetypes[ft]
-    end
-
-    -- Check if it's a string in the array part
-    for i, config in ipairs(M.options.filetypes) do
-        if type(config) == "string" and config == ft then
-            return ft
-        end
-    end
-
-    return nil
-
+function M.is_supported_filetype()
+    return M.get_inject_language() ~= nil
 end
 
 -- Initialize with defaults

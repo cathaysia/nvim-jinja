@@ -53,7 +53,22 @@ use {
 require("nvim-jinja").setup({
   enabled = true,                    -- Enable the plugin
   debug = false,                     -- Enable debug messages
-  filetypes = { "yaml" },         -- Supported file types
+  filetypes = {
+    extensions = {
+      ["html"] = "html",
+      ["yaml.j2"] = "yaml",
+      ["html.j2"] = "html",
+      ["xml.j2"] = "xml",
+      ["json.j2"] = "json",
+      ["css.j2"] = "css",
+      ["js.j2"] = "javascript",
+      ["ts.j2"] = "typescript",
+    },
+    complex = {
+      [".*git/config.j2"] = "gitconfig",
+      [".*layouts/.*.html"] = "html",
+    },
+  },
   auto_install_parsers = false,      -- Auto install missing parsers
 })
 ```

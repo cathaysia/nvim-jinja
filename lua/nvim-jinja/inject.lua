@@ -4,8 +4,6 @@ local M = {}
 
 -- Setup injection rules for the current buffer
 function M.setup_injection(ft)
-    local inject_language = config.get_inject_language(ft)
-
     local inject = string.format(
         [[
 ((inline) @injection.content
@@ -17,7 +15,7 @@ function M.setup_injection(ft)
 ((words) @injection.content
   (#set! injection.language "%s"))
 ]],
-        inject_language
+        ft
     )
     vim.treesitter.query.set("jinja", "injections", inject)
 end

@@ -13,15 +13,12 @@ end
 
 -- Get plugin status
 function M.status()
-    local ft = utils.get_ft() or ''
-
     local status = {
         enabled = config.is_enabled(),
-        supported_filetype = config.is_supported_filetype(ft),
+        supported_filetype = config.is_supported_filetype(),
         has_treesitter = utils.has_treesitter(),
         has_jinja_parser = utils.has_jinja_parser(),
         has_yaml_parser = utils.has_yaml_parser(),
-        current_filetype = ft,
     }
 
     return status
@@ -33,26 +30,27 @@ function M.info()
 
     print("nvim-jinja status:")
     print("  Enabled: " .. tostring(status.enabled))
-    print("  Current filetype: " .. status.current_filetype)
     print("  Supported filetype: " .. tostring(status.supported_filetype))
     print("  Has treesitter: " .. tostring(status.has_treesitter))
     print("  Has jinja parser: " .. tostring(status.has_jinja_parser))
     print("  Has yaml parser: " .. tostring(status.has_yaml_parser))
     print("  Injection active: " .. tostring(status.injection_active))
+    print("  Config", vim.inspect(config.options))
 end
 
 -- Handle filetype event
 function M.on_filetype()
-    local ft = utils.get_ft()
+    local ft = config.get_inject_language()
     if ft == nil then
         return
     end
 
     utils.debug("FileType event triggered: " .. ft)
 
-    if config.is_supported_filetype(ft) then
+    if config.is_supported_filetype() then
         utils.debug("Supported filetype detected, setting up injection")
         inject.setup_injection(ft)
+        vim.bo.filetype = "jinja"
     end
 end
 
