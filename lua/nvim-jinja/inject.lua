@@ -2,7 +2,7 @@ local config = require("nvim-jinja.config")
 
 local M = {}
 
--- Setup injection rules for the current buffer
+--- @param ft string
 function M.setup_injection(ft)
 	local inject = string.format(
 		[[

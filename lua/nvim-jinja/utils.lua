@@ -33,7 +33,7 @@ function M.has_yaml_parser()
 	return parsers.has_parser("yaml")
 end
 
--- Log debug message
+--- @param msg string
 function M.debug(msg)
 	local config = require("nvim-jinja.config")
 	if config.options.debug then
@@ -41,19 +41,24 @@ function M.debug(msg)
 	end
 end
 
--- Log info message
+--- @param msg string
 function M.info(msg)
 	vim.notify("[nvim-jinja] " .. msg, vim.log.levels.INFO)
 end
 
--- Log warning message
+--- @param msg string
 function M.warn(msg)
 	vim.notify("[nvim-jinja] " .. msg, vim.log.levels.WARN)
 end
 
--- Log error message
+--- @param msg string
 function M.error(msg)
 	vim.notify("[nvim-jinja] " .. msg, vim.log.levels.ERROR)
+end
+
+--- @return string
+function M.get_file_path()
+	return vim.api.nvim_buf_get_name(0)
 end
 
 return M

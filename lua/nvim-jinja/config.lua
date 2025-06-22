@@ -1,6 +1,7 @@
 local M = {}
 
 -- Default configuration
+--- @class Config
 M.defaults = {
 	enabled = true,
 	debug = false,
@@ -23,10 +24,12 @@ M.defaults = {
 }
 
 -- Current configuration
+--- @type Config
+--- @diagnostic disable-next-line: missing-fields
 M.options = {}
 
-function M.get_inject_language()
-	local filepath = vim.api.nvim_buf_get_name(0)
+--- @param filepath string
+function M.get_inject_language(filepath)
 	local filename = vim.fn.fnamemodify(filepath, ":t")
 
 	-- Get filetypes configuration
@@ -56,14 +59,9 @@ function M.get_inject_language()
 	return nil
 end
 
--- Setup configuration
+--- @param opts Config | nil
 function M.setup(opts)
 	M.options = vim.tbl_deep_extend("force", M.defaults, opts or {})
-end
-
--- Get configuration option
-function M.get(key)
-	return M.options[key]
 end
 
 -- Check if plugin is enabled
@@ -72,8 +70,8 @@ function M.is_enabled()
 end
 
 -- Check if filetype is supported
-function M.is_supported_filetype()
-	return M.get_inject_language() ~= nil
+function M.is_supported_filetype(filetype)
+	return M.get_inject_language(filetype) ~= nil
 end
 
 -- Initialize with defaults
