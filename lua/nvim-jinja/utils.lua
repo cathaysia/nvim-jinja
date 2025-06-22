@@ -1,5 +1,12 @@
 local M = {}
 
+function M.get_ft()
+    local filename = vim.api.nvim_buf_get_name(0)
+    local _, _, ft = string.find(filename, "%.(%w+)%.j2$")
+
+    return ft
+end
+
 -- Check if nvim-treesitter is available
 function M.has_treesitter()
   local ok, _ = pcall(require, "nvim-treesitter")
