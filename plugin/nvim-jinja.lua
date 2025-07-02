@@ -25,13 +25,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	desc = "Setup jinja injection for yaml.j2 files",
 })
 
--- Create user commands
-vim.api.nvim_create_user_command("JinjaEnable", function()
-	nvim_jinja.enable()
-end, {
-	desc = "Enable jinja injection for current buffer",
-})
-
 vim.api.nvim_create_user_command("JinjaInfo", function()
 	nvim_jinja.info()
 end, {
